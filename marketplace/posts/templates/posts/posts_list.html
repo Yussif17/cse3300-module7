@@ -1,0 +1,44 @@
+{% extends 'layout.html' %}
+{% load static %}
+{%block title%}
+  Listings
+
+{%endblock%}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<link rel="stylesheet" href="{% static 'css/post_list.css' %}">
+{% endblock %}
+
+{% block content %}
+<h1 class="page-title">
+  <div>Listings</div></h1>
+  <section class="posts-list">
+
+  {% for post in posts %}
+    <article class="post">
+      <a  href="{% url 'posts:page' slug=post.slug %}">
+      <div class="img-border">
+            <img class="banner"
+             src="{% url 'posts:get_image' post.image_id %}"
+
+              alt="{{ post.title }}
+              "
+              >
+
+
+        </div>
+      </a>
+
+      <h2>
+        <div class="post-price">{{ post.price }}</div>
+        <a href="{% url 'posts:page' slug=post.slug %}">   
+          <div class="post-title">{{ post.title }}</div>
+        </a>
+      </h2>
+      <div class="post-date"><p>{{ post.date }}</p></div>
+      
+    </article>
+  {% endfor %}
+</section>
+{% endblock %}

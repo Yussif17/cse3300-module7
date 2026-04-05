@@ -1,0 +1,43 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{%block title%}
+  {{ post.title }}
+
+{%endblock%}
+{% block styles %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/post_page.css' %}">
+{% endblock %}
+
+{% block content %}
+  <body>
+    <div class="img-border">
+    <img
+     class="banner"
+     src="{% url 'posts:get_image' post.image_id %}"
+     alt = "{{ post.title }}"
+     >
+    </div>
+    <div class="popup" id="popup">
+      <button class="close" id="close">&times;</button>
+      <img src="{% url 'posts:get_image' post.image_id %}" alt="Zoom in on image">
+    </div>
+    <h1>{{ post.title }}</h1>
+      <p>{{ post.price }}</p>
+      <p>{{ post.date }}</p>
+      <p>{{ post.body }}</p>
+      {% if request.session.username and request.session.username != post.author %}
+        <button href="{% url 'chat:private_chat' user1=request.session.username user2=post.author %}" class="contactButton">Contact Seller</button>
+        <a href="{% url 'chat:private_chat' user1=request.session.username user2=post.author %}" 
+        class="message-button">
+         Message Seller
+     </a>
+      {% else %}
+         
+      {% endif %}
+    
+    <script src="{% static 'js/post_page.js' %}"></script>
+
+  </body>
+{% endblock %}

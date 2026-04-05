@@ -1,0 +1,93 @@
+{% extends 'layout.html' %}
+{% block content %}
+{% load static %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/chat_box.css' %}">
+{% endblock %}
+
+
+<div class="chat-container">
+    <div class="title-box" ><h2 class="title">Chat with {{ user2 }}</h2></div>
+    <div  class="chat-box" id="chat-box">
+        {% for message in messages %}  
+           {% if request.session.username == message.sender %}
+            <p class="right-side-text">{{ message.message }}</p>
+            {% else %}
+            <p class="left-side-text">{{ message.message }}</p>
+        {% endif %}
+        {% endfor %}
+    </div>
+
+    <div class="chat-input">
+        <input type="text" class="message-input" id="message-input" placeholder="Message">
+        <button class="send-button" id="send-btn">Send</button>
+    </div>
+</div>
+
+<script>
+    const user1 = "{{ user1 }}";
+    const user2 = "{{ user2 }}";
+    const ws_scheme = window.location.protocol === "https:" ? "wss" : "ws";
+    const ws = new WebSocket(`${ws_scheme}://` + window.location.host + `/ws/chat/${user1}/${user2}/`);
+    
+    const chatBox = document.getElementById("chat-box");
+
+
+    function scrollToBottom() {
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+
+    window.onload = scrollToBottom;
+    scrollToBottom()
+
+
+     {% comment %} ws.onmessage = function(event) {
+        const data = JSON.parse(event.data);
+
+
+        const newMessage = document.createElement("p");
+        newMessage.setAttribute("class", "right-side-text");
+        newMessage.innerHTML = `</strong> ${data.message}`;
+        chatBox.appendChild(newMessage);
+
+
+        scrollToBottom();
+    };  {% endcomment %}
+
+    document.getElementById("send-btn").onclick = function() {
+        const messageInput = document.getElementById("message-input");
+        const message = messageInput.value.trim();
+
+        if (message !== "") {
+            ws.send(JSON.stringify({
+                "message": message,
+                "sender": user1
+            }));
+
+
+            const newMessage = document.createElement("p");
+            newMessage.setAttribute("class", "right-side-text");
+            newMessage.innerHTML = `${message}`;
+     
+            chatBox.appendChild(newMessage);
+           
+
+            scrollToBottom();
+
+            messageInput.value = "";
+            messageInput.focus(); 
+        }
+        
+    };
+    messageInput.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                document.getElementById("send-btn").click();
+                event.preventDefault(); 
+            }
+        });
+</script>
+
+{% endblock %}

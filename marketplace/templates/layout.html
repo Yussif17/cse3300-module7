@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+    {% block title %}
+      Django App
+    {% endblock %}
+  </title>
+  <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+  <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+  <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+  <link rel="icon" href="{% static 'images/favicon.png' %}" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+  {% block styles %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  {% endblock %}
+  <script src="{% static 'js/main.js' %}" defer></script>
+  <style>
+    body {
+      font-family: 'Roboto', Arial, sans-serif;
+    }
+
+    nav {
+      display: flex;
+      font-size: 2rem;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      background-color: #f4f4f4;
+      border-bottom: 1px solid #ddd;
+    }
+
+    nav div {
+      display: flex;
+      align-items: center;
+      padding: 3px;
+    }
+
+    nav div a {
+      margin-right: 20px;
+      text-decoration: none;
+      color: #333;
+    }
+
+    nav div a:hover {
+      text-decoration: underline;
+    }
+
+    nav form {
+      margin: 0;
+      display: inline;
+    }
+
+    nav .logout-button {
+      font-size: 2rem;
+      background: none;
+      border: none;
+      color: #333;
+      cursor: pointer;
+    }
+
+    .logout-button:hover {
+      text-decoration: underline;
+      opacity: .88;
+    }
+
+    a:hover {
+      opacity: .88;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div>
+      <a href="/" aria-label="Home" title="Home">Home</a>   
+      <a href="/about" aria-label="About" title="About">About</a>
+      {% if authenticated_user %}
+        <a href="{% url 'posts:list' %}" aria-label="Posts" title="Posts">Listings</a>
+      {% endif %}
+    </div>
+    <div>
+      {% if authenticated_user %}
+         <a href="{% url 'posts:new-post' %}" aria-label="New Post" title="New Post">New Listing</a> 
+          <form class="logout" action="{% url 'users:logout' %}" method="post">
+          {% csrf_token %}
+          <button class="logout-button" aria-label="User Logout" title="User Logout">Logout</button>
+        </form>
+      {% else %}
+        <a href="{% url 'users:login' %}" aria-label="Login" title="Login">Login</a>
+        <a href="{% url 'users:register' %}" aria-label="Register" title="Register">Register</a>  
+      {% endif %}
+    </div>
+  </nav>
+  <main>
+    {% block content %}
+    {% endblock %}
+  </main>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block title %}
+  Home
+{% endblock %}
+
+{% block styles %}
+
+  <link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+  <h1>Welcome to WashU's Student Marketplace</h1>
+  <p>Check out my <a href="/about">About</a> page.</p>
+{% endblock %}
