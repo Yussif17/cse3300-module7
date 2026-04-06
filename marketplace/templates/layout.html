@@ -78,7 +78,7 @@
   <nav>
     <div>
       <a href="/" aria-label="Home" title="Home">Home</a>   
-      <a href="/about" aria-label="About" title="About">About</a>
+      {% comment %} <a href="/about" aria-label="About" title="About">About</a> {% endcomment %}
       {% if authenticated_user %}
         <a href="{% url 'posts:list' %}" aria-label="Posts" title="Posts">Listings</a>
       {% endif %}
