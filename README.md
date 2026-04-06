@@ -39,3 +39,5 @@ Styling (5 points)
 	•	5 points: Website is styled with CSS and is responsive/mobile-friendly
 
 Total (100 points)
+
+Approved by Edgar
